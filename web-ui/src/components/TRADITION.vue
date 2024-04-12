@@ -26,17 +26,17 @@
       <!--Line of Code(LOC)  Cyclomatic Complexity(CC)  Comment Percentage(CP)    -->
       <el-table-column
           prop="loc"
-          label="Line of Code(LOC)"
+          label="代码行"
           width="200">
       </el-table-column>
       <el-table-column
           prop="cc"
-          label="Cyclomatic Complexity(CC)"
+          label="圈复杂度"
           width="220">
       </el-table-column>
       <el-table-column
           prop="cp"
-          label="Comment Percentage(CP)"
+          label="注释比例"
           width="200">
       </el-table-column>
     </el-table>

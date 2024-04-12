@@ -18,87 +18,52 @@
         style="width: 100%">
       <el-table-column
           prop="class"
-          label="class"
+          label="类名"
           width="180">
       </el-table-column>
       <el-table-column
           prop="file"
-          label="file"
+          label="文件路径"
           width="180">
       </el-table-column>
       <el-table-column
           prop="type"
-          label="type"
+          label="类型"
           width="70">
       </el-table-column>
       <el-table-column
           prop="loc"
-          label="loc"
+          label="代码行"
           width="70">
       </el-table-column>
       <el-table-column
           prop="noc"
-          label="noc"
-          width="70">
-      </el-table-column>
-      <!-- <el-table-column
-          prop="nof"
-          label="nof"
-          width="70">
-      </el-table-column> -->
-      <!-- <el-table-column
-          prop="nopf"
-          label="nopf"
-          width="70">
-      </el-table-column> -->
-      <el-table-column
-          prop="nosi"
-          label="nosi"
+          label="子类数"
           width="70">
       </el-table-column>
       <el-table-column
           prop="lcom"
-          label="lcom"
+          label="内聚缺乏度"
           width="70">
       </el-table-column>
-      <!-- <el-table-column
-          prop="nosf"
-          label="nosf"
-          width="70">
-      </el-table-column> -->
-      <!-- <el-table-column
-          prop="nosm"
-          label="nosm"
-          width="70">
-      </el-table-column> -->
       <el-table-column
           prop="wmc"
-          label="wmc"
+          label="类加权方法数"
           width="70">
       </el-table-column>
-      <el-table-column
-          prop="nom"
-          label="nom"
-          width="70">
-      </el-table-column>
-      <!-- <el-table-column
-          prop="nopm"
-          label="nopm"
-          width="70">
-      </el-table-column> -->
       <el-table-column
           prop="rfc"
-          label="rfc"
+          label="类响应数"
           width="70">
       </el-table-column>
       <el-table-column
           prop="dit"
-          label="dit"
+          label="继承树深度"
           width="70">
       </el-table-column>
       <el-table-column
           prop="cbo"
-          label="cbo"
+          label="对象耦合"
           width="70">
       </el-table-column>
     </el-table>
