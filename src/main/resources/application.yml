@@ -1,0 +1,14 @@
+server:
+  port: 12345
+
+logging:
+  file:
+    path: res/logs
+  level:
+    org.springframework: warn
+    com.example.myapp: debug
+
+res:
+  upload: res/upload/
+  output: res/output/
+
