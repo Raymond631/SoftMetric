@@ -17,8 +17,7 @@ import java.util.Map;
 
 @Service
 public class MainService {
-    public Map<String, CKClassResult> ck() {
-        String path = "/home/raymond/project/BlindHelmet";
+    public Map<String, CKClassResult> ck(String path) {
         Map<String, CKClassResult> results = new HashMap<>();
 
         new CK(false, 0, false).calculate(path, new CKNotifier() {
@@ -39,13 +38,38 @@ public class MainService {
     public Map<String, LKResult> lk(Map<String, CKClassResult> ckClassResultMap) {
         Map<String, LKResult> lkResults = new HashMap<>();
         for (CKClassResult ckClassResult : ckClassResultMap.values()) {
+            // 计算cs
             int cs = ckClassResult.getNumberOfFields() + ckClassResult.getNumberOfMethods();
-            // TODO: 还要计算noo、noa
-            int noo = 1;
-            int noa = 0;
 
+            int dit = ckClassResult.getDit();
             int nom = ckClassResult.getNumberOfMethods();
-            double si = nom == 0 ? 0 : noo * ckClassResult.getDit() / (double) nom;
+
+            // 计算noo和noa
+            int noo = 0;
+            int noa = nom;
+            if (dit > 1) {  // 有extends
+                try {
+                    BufferedReader reader = new BufferedReader(new FileReader(ckClassResult.getFile()));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        line = line.trim();
+                        if (line.isEmpty()) {
+                            continue;
+                        }
+                        // TODO: 如果既有继承父类，又有实现接口，noo可能偏大；如果重写的方法没有标注@Override，noo可能偏小
+                        if (line.contains("@Override")) {
+                            noo++;
+                        }
+                    }
+                    reader.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                noa -= noo;
+            }
+            // 计算si
+            double si = nom == 0 ? 0 : noo * dit / (double) nom;
             String siStr = NumberUtil.roundStr(si, 2);
 
             lkResults.put(ckClassResult.getClassName(), new LKResult(
