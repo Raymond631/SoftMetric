@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CKResult {
-    private String className;
-    private String type;
     private int wmc;
     private int rfc;
     private int dit;

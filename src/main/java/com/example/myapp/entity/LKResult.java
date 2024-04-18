@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LKResult {
-    private String className;
-    private String type;
     private int cs;
     private int noo;
     private int noa;

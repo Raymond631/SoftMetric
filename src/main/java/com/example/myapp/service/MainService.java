@@ -12,9 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -38,22 +36,19 @@ public class MainService {
         return results;
     }
 
-    public List<LKResult> lk(Map<String, CKClassResult> ckClassResultMap) {
-        List<LKResult> lkResults = new ArrayList<>();
+    public Map<String, LKResult> lk(Map<String, CKClassResult> ckClassResultMap) {
+        Map<String, LKResult> lkResults = new HashMap<>();
         for (CKClassResult ckClassResult : ckClassResultMap.values()) {
-            String className = ckClassResult.getClassName();
-            String type = ckClassResult.getType();
             int cs = ckClassResult.getNumberOfFields() + ckClassResult.getNumberOfMethods();
             // TODO: 还要计算noo、noa
-            int noo = 0;
+            int noo = 1;
             int noa = 0;
 
-            double si = noo * ckClassResult.getDit() / ckClassResult.getNumberOfMethods();
+            int nom = ckClassResult.getNumberOfMethods();
+            double si = nom == 0 ? 0 : noo * ckClassResult.getDit() / (double) nom;
             String siStr = NumberUtil.roundStr(si, 2);
 
-            lkResults.add(new LKResult(
-                    className,
-                    type,
+            lkResults.put(ckClassResult.getClassName(), new LKResult(
                     cs,
                     noo,
                     noa,
@@ -64,8 +59,8 @@ public class MainService {
     }
 
 
-    public List<TraditionResult> tradition(Map<String, CKClassResult> ckClassResultMap) {
-        List<TraditionResult> traditionResults = new ArrayList<>();
+    public Map<String, TraditionResult> tradition(Map<String, CKClassResult> ckClassResultMap) {
+        Map<String, TraditionResult> traditionResults = new HashMap<>();
         for (CKClassResult ckClassResult : ckClassResultMap.values()) {
             try {
                 BufferedReader reader = new BufferedReader(new FileReader(ckClassResult.getFile()));
@@ -73,17 +68,12 @@ public class MainService {
                 int totalLines = 0;
                 int commentLines = 0;
                 int complexity = 1; // 默认圈复杂度为1
-                String type = "class";
 
                 while ((line = reader.readLine()) != null) {
                     totalLines++;
                     line = line.trim();
                     if (line.isEmpty()) {
                         continue;
-                    }
-
-                    if (line.contains("interface")) {
-                        type = "interface";
                     }
 
                     if (line.startsWith("//")) { // 检查是否为单行注释
@@ -104,9 +94,7 @@ public class MainService {
                 double commentPercentage = ((double) commentLines / totalLines) * 100;
                 String cpStr = NumberUtil.roundStr(commentPercentage, 2) + "%";
 
-                traditionResults.add(new TraditionResult(
-                        ckClassResult.getClassName(),
-                        type,
+                traditionResults.put(ckClassResult.getClassName(), new TraditionResult(
                         totalLines,
                         cpStr,
                         complexity

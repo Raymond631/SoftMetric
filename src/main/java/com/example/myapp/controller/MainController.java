@@ -3,6 +3,7 @@ package com.example.myapp.controller;
 import com.example.myapp.common.http.CommonResponse;
 import com.example.myapp.entity.CKResult;
 import com.example.myapp.entity.LKResult;
+import com.example.myapp.entity.MetricResult;
 import com.example.myapp.entity.TraditionResult;
 import com.example.myapp.service.MainService;
 import com.github.mauricioaniche.ck.CKClassResult;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,11 +23,12 @@ public class MainController {
     @GetMapping("metric")
     public CommonResponse metric() {
         Map<String, CKClassResult> ckClassResultMap = mainService.ck();
-        List<CKResult> ckResults = new ArrayList<>();
+        Map<String, LKResult> lkResults = mainService.lk(ckClassResultMap);
+        Map<String, TraditionResult> traditionResults = mainService.tradition(ckClassResultMap);
+
+        List<MetricResult> metricResults = new ArrayList<>();
         for (CKClassResult r : ckClassResultMap.values()) {
             CKResult ckResult = new CKResult(
-                    r.getClassName(),
-                    r.getType(),
                     r.getWmc(),
                     r.getRfc(),
                     r.getDit(),
@@ -35,16 +36,16 @@ public class MainController {
                     r.getCbo(),
                     r.getLcom()
             );
-            ckResults.add(ckResult);
+            metricResults.add(new MetricResult(
+                    r.getClassName(),
+                    r.getType(),
+                    ckResult,
+                    lkResults.get(r.getClassName()),
+                    traditionResults.get(r.getClassName())
+            ));
         }
 
-        List<LKResult> lkResults = mainService.lk(ckClassResultMap);
-        List<TraditionResult> traditionResults = mainService.tradition(ckClassResultMap);
 
-        Map<String, List> result = new HashMap<>();
-        result.put("ck", ckResults);
-        result.put("lk", lkResults);
-        result.put("tradition", traditionResults);
-        return CommonResponse.success(result);
+        return CommonResponse.success(metricResults);
     }
 }
