@@ -28,7 +28,7 @@ public class MainController {
     @Autowired
     private MainService mainService;
 
-    @GetMapping("metric")
+    @GetMapping("/metric")
     public CommonResponse metric(@RequestParam("uuid") String uuid) {
         String path = String.format("%s/%s/", uploadDir, uuid);
         Map<String, CKClassResult> ckClassResultMap = mainService.ck(path);
@@ -57,7 +57,7 @@ public class MainController {
         return CommonResponse.success(metricResults);
     }
 
-    @PostMapping("uploadFiles")
+    @PostMapping("/uploadFiles")
     public CommonResponse uploadFile(@RequestParam("files") MultipartFile[] folder) {
         String uuid = UUID.randomUUID().toString();
         FileUtil.saveMultiFile(String.format("%s/%s/", uploadDir, uuid), folder);
