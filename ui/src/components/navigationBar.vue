@@ -18,13 +18,13 @@
       <el-icon class="menu_item_icon">
         <Reading />
       </el-icon>
-      <span class="menu_item_content">用例图辅助度量</span>
+      <span class="menu_item_content">用例图点度量</span>
     </el-menu-item>
     <el-menu-item index="2" class="menu_item">
       <el-icon class="menu_item_icon">
         <Reading />
       </el-icon>
-      <span class="menu_item_content">代码辅助度量</span>
+      <span class="menu_item_content">代码度量</span>
     </el-menu-item>
   </el-menu>
 </template>

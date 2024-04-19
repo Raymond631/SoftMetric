@@ -28,9 +28,9 @@
     </div>
     <div class="content">
       <el-scrollbar height="80vh">
-        <div id="ck-graph" class="ck-graph" style=""></div>
+        <div id="ck-graph" class="ck-graph" v-show="graph"></div>
         <div class="table-name">CK度量</div>
-        <el-table :data="CKData" class="table">
+        <el-table :data="CKData" class="table" @row-click="openDetails">
           <el-table-column prop="className" label="ClassName" />
           <el-table-column prop="type" label="Type" />
           <el-table-column prop="wmc" label="WMC" />
@@ -70,8 +70,7 @@ import navigationBar from "@/components/navigationBar.vue";
 import welcomeHeader from "@/components/header.vue";
 import { metric } from "@/api/code";
 import axios from "axios";
-import * as echarts from 'echarts';
-
+import * as echarts from "echarts";
 
 export default defineComponent({
   name: "code",
@@ -81,6 +80,7 @@ export default defineComponent({
       LKData: [],
       TRAData: [],
       uuid: "",
+      graph:false
     };
   },
   components: { navigationBar, welcomeHeader },
@@ -132,53 +132,80 @@ export default defineComponent({
           that.CKData = res.data.ck;
           that.LKData = res.data.lk;
           that.TRAData = res.data.tradition;
+          that.ckGraph();
         })
         .catch((err: any) => {
           console.log(err);
         });
     },
-    ckGraph() {
-      var chartDom = document.getElementById('main');
-var myChart = echarts.init(chartDom);
-var option;
-
-option = {
-  title: {
-    text: 'Basic Radar Chart'
-  },
-  legend: {
-    data: ['Allocated Budget', 'Actual Spending']
-  },
-  radar: {
-    // shape: 'circle',
-    indicator: [
-      { name: 'Sales', max: 6500 },
-      { name: 'Administration', max: 16000 },
-      { name: 'Information Technology', max: 30000 },
-      { name: 'Customer Support', max: 38000 },
-      { name: 'Development', max: 52000 },
-      { name: 'Marketing', max: 25000 }
-    ]
-  },
-  series: [
-    {
-      name: 'Budget vs spending',
-      type: 'radar',
-      data: [
-        {
-          value: [4200, 3000, 20000, 35000, 50000, 18000],
-          name: 'Allocated Budget'
+    ckGraph(ckGraphData, ckName) {
+      let chartDom = document.getElementById("ck-graph");
+      let myChart = echarts.init(chartDom);
+      let option;
+      this.graph = true;
+      // for (const i of this.CKData) {
+      //   let temp = { value: [], name: "" };
+      //   temp.name = i.className;
+      //   temp.value.push(i.wmc);
+      //   temp.value.push(i.rfc);
+      //   temp.value.push(i.dit);
+      //   temp.value.push(i.noc);
+      //   temp.value.push(i.cbo);
+      //   temp.value.push(i.lcom);
+      //   ckGraphData.push(temp);
+      //   ckName.push(i.className);
+      // }
+      // console.log(ckGraphData);
+      option = {
+        title: {
+          text: "ck Chart",
         },
-        {
-          value: [5000, 14000, 28000, 26000, 42000, 21000],
-          name: 'Actual Spending'
-        }
-      ]
-    }
-  ]
-};
-
-option && myChart.setOption(option);
+        legend: {
+          data: ckName,
+        },
+        radar: {
+          // shape: 'circle',
+          indicator: [
+            { name: "WMC", max: 10 },
+            { name: "RFC", max: 30 },
+            { name: "DIT", max: 5 },
+            { name: "NOC", max: 10 },
+            { name: "CBO", max: 20 },
+            { name: "LCOM", max: 10 },
+          ],
+        },
+        series: [
+          {
+            name: "ck",
+            type: "radar",
+            data: ckGraphData,
+          },
+        ],
+      };
+      myChart.setOption({
+        grid: {
+          width: "30%",
+          height: "50%",
+        },
+      });
+      option && myChart.setOption(option);
+    },
+    openDetails(row) {
+      //具体操作
+      console.log(row);
+      let ckGraphData = [];
+      let ckName = [];
+      let temp = { value: [], name: "" };
+      temp.name = row.className;
+      temp.value.push(row.wmc);
+      temp.value.push(row.rfc);
+      temp.value.push(row.dit);
+      temp.value.push(row.noc);
+      temp.value.push(row.cbo);
+      temp.value.push(row.lcom);
+      ckGraphData.push(temp);
+      ckName.push(row.className);
+      this.ckGraph(ckGraphData,ckName)
     },
   },
 });

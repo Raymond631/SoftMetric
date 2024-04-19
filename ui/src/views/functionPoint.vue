@@ -5,7 +5,7 @@
     <!-- <welcomeHeader /> -->
     <div class="content">
       <el-scrollbar height="85vh">
-        <div class="table-name">UFC计算</div>
+        <div class="table-name">step1: UFC计算</div>
         <el-table :data="UFCData" class="table">
           <el-table-column prop="name" label="请输入对应个数" />
           <el-table-column label="Simple" prop="simple">
@@ -54,7 +54,7 @@
         </el-table>
         <div class="calculator">UFC计算结果：{{ ufcResult }}</div>
 
-        <div class="table-name">VAF计算</div>
+        <div class="table-name">step2: VAF计算</div>
         <el-table :data="VAFData" class="table">
           <el-table-column prop="index" label="序号" />
           <el-table-column prop="character" label="系统特性" />
