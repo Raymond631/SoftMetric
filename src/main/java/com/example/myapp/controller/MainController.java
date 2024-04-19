@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 public class MainController {
@@ -31,30 +31,20 @@ public class MainController {
     @GetMapping("/metric")
     public CommonResponse metric(@RequestParam("uuid") String uuid) {
         String path = String.format("%s/%s/", uploadDir, uuid);
-        Map<String, CKClassResult> ckClassResultMap = mainService.ck(path);
-        Map<String, LKResult> lkResults = mainService.lk(ckClassResultMap);
-        Map<String, TraditionResult> traditionResults = mainService.tradition(ckClassResultMap);
-
-        List<MetricResult> metricResults = new ArrayList<>();
-        for (CKClassResult r : ckClassResultMap.values()) {
-            CKResult ckResult = new CKResult(
-                    r.getWmc(),
-                    r.getRfc(),
-                    r.getDit(),
-                    r.getNoc(),
-                    r.getCbo(),
-                    r.getLcom()
-            );
-            metricResults.add(new MetricResult(
-                    r.getClassName(),
-                    r.getType(),
-                    ckResult,
-                    lkResults.get(r.getClassName()),
-                    traditionResults.get(r.getClassName())
-            ));
+        if (!cn.hutool.core.io.FileUtil.exist(path)) {
+            return CommonResponse.error("目录不存在，请重新上传");
         }
 
-        return CommonResponse.success(metricResults);
+        Map<String, CKClassResult> ckClassResultMap = mainService.ck(path);
+        List<LKResult> lkResults = mainService.lk(ckClassResultMap);
+        List<TraditionResult> traditionResults = mainService.tradition(ckClassResultMap);
+
+        List<CKResult> ckResults = ckClassResultMap.values().stream()
+                .map(r -> new CKResult(r.getClassName(), r.getType(), r.getWmc(), r.getRfc(), r.getDit(), r.getNoc(), r.getCbo(), r.getLcom()))
+                .collect(Collectors.toList());
+
+        MetricResult metricResult = new MetricResult(ckResults, lkResults, traditionResults);
+        return CommonResponse.success(metricResult);
     }
 
     @PostMapping("/uploadFiles")

@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -35,8 +37,8 @@ public class MainService {
         return results;
     }
 
-    public Map<String, LKResult> lk(Map<String, CKClassResult> ckClassResultMap) {
-        Map<String, LKResult> lkResults = new HashMap<>();
+    public List<LKResult> lk(Map<String, CKClassResult> ckClassResultMap) {
+        List<LKResult> lkResults = new ArrayList<>();
         for (CKClassResult ckClassResult : ckClassResultMap.values()) {
             // 计算cs
             int cs = ckClassResult.getNumberOfFields() + ckClassResult.getNumberOfMethods();
@@ -72,7 +74,9 @@ public class MainService {
             double si = nom == 0 ? 0 : noo * dit / (double) nom;
             String siStr = NumberUtil.roundStr(si, 2);
 
-            lkResults.put(ckClassResult.getClassName(), new LKResult(
+            lkResults.add(new LKResult(
+                    ckClassResult.getClassName(),
+                    ckClassResult.getType(),
                     cs,
                     noo,
                     noa,
@@ -83,8 +87,8 @@ public class MainService {
     }
 
 
-    public Map<String, TraditionResult> tradition(Map<String, CKClassResult> ckClassResultMap) {
-        Map<String, TraditionResult> traditionResults = new HashMap<>();
+    public List<TraditionResult> tradition(Map<String, CKClassResult> ckClassResultMap) {
+        List<TraditionResult> traditionResults = new ArrayList<>();
         for (CKClassResult ckClassResult : ckClassResultMap.values()) {
             try {
                 BufferedReader reader = new BufferedReader(new FileReader(ckClassResult.getFile()));
@@ -118,7 +122,9 @@ public class MainService {
                 double commentPercentage = ((double) commentLines / totalLines) * 100;
                 String cpStr = NumberUtil.roundStr(commentPercentage, 2) + "%";
 
-                traditionResults.put(ckClassResult.getClassName(), new TraditionResult(
+                traditionResults.add(new TraditionResult(
+                        ckClassResult.getClassName(),
+                        ckClassResult.getType(),
                         totalLines,
                         cpStr,
                         complexity

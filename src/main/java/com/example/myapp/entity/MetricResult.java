@@ -4,13 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class MetricResult {
-    private String className;
-    private String type;
-    private CKResult ck;
-    private LKResult lk;
-    private TraditionResult tradition;
+    private List<CKResult> ck;
+    private List<LKResult> lk;
+    private List<TraditionResult> tradition;
 }

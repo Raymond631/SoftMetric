@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TraditionResult {
+    private String className;
+    private String type;
     private int loc;
     private String cp; // 保留2位小数
     private int cc;
