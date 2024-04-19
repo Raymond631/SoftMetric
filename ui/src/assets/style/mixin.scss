@@ -1,0 +1,184 @@
+$theme_color: rgb(14, 111, 100);
+$word_color: rgba(127, 131, 133);
+$max_height: 100vh;
+$max_width: 100vw;
+$back_color: #f6f6f6;
+$Mleft: 15vw;
+@font-face {
+  font-family: coca_cola;
+  src: url('./font/coca_cola.ttf')
+}
+
+//遮罩层
+@mixin mask {
+  background-color: rgb(0, 0, 0);
+  opacity: 0.3;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+}
+
+//遮罩层上的编辑表单
+@mixin mask-form($width,$height,$top,$left) {
+  position: fixed;
+  display: grid;
+  top: $top;
+  left: $left;
+  width: $width;
+  height: $height;
+  overflow: auto;
+  border-radius: 20px;
+  background-color: $back_color;
+  z-index: 4;
+
+  .form-title {
+    width: $width;
+    font-family: coca_cola, serif;
+    font-size: 30px;
+    margin: 30px auto;
+  }
+
+  .form-item {
+    display: flex;
+    margin: 20px 0 auto;
+
+    label {
+      font-size: 18px;
+      margin-left: 120px;
+      margin-right: 20px;
+      width: 100px;
+      text-align: right;
+    }
+
+    .form-input,.el-date-editor.el-input {
+      width: 250px;
+    }
+  }
+
+  .actionBtns {
+    width: 333px;
+    margin: 30px auto;
+    display: flex;
+    justify-content: space-between;
+
+    .actionBtn {
+      width: 120px;
+    }
+  }
+}
+
+//卡片样式
+@mixin card($width,$height) {
+  background-color: #ffffff;
+  border-radius: 15px;
+  width: $width;
+  height: $height;
+  padding-bottom: 20px;
+  margin-bottom: 10px;
+  display: grid;
+  .title {
+    font: {
+      family: coca_cola;
+      size: 30px;
+    }
+    height: 50px;
+    margin: 20px auto 0;
+  }
+  .item {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    height: 50px;
+
+    label {
+      width: 70px;
+      margin-left: 50px;
+    }
+
+    .el-input {
+      margin-left: 10px;
+      width: $width - 200px;
+      height: 40px;
+    }
+  }
+}
+
+$back_color: #fafafa;
+$basic_color:#008bf8;
+$basic_color_hover: #007bff;
+$font_dark_color:#34495e;
+$dark_color: #000000;
+
+@mixin basic_font(){
+  line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+}
+
+//game页面选择海浪样式的按钮
+@mixin pretty_button($width, $height) {
+  .button {
+    width: $width;
+    height: $height;
+    display: inline-block;
+    padding: 12px 24px;
+    border: 1px solid #4f4f4f;
+    border-radius: 4px;
+    transition: all 0.2s ease-in;
+    position: relative;
+    overflow: hidden;
+    font-size: 19px;
+    color: black;
+    z-index: 1;
+  }
+
+  .button:before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) scaleY(1) scaleX(1.25);
+    top: 100%;
+    width: 140%;
+    height: 180%;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 50%;
+    display: block;
+    transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+    z-index: -1;
+  }
+
+  .button:after {
+    content: "";
+    position: absolute;
+    left: 55%;
+    transform: translateX(-50%) scaleY(1) scaleX(1.45);
+    top: 180%;
+    width: 160%;
+    height: 190%;
+    background-color: #39bda7;
+    border-radius: 50%;
+    display: block;
+    transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+    z-index: -1;
+  }
+
+  .button:hover {
+    color: #ffffff;
+    border: 1px solid #39bda7;
+  }
+
+  .button:hover:before {
+    top: -35%;
+    background-color: #39bda7;
+    transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+  }
+
+  .button:hover:after {
+    top: -45%;
+    background-color: #39bda7;
+    transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+  }
+}
+
